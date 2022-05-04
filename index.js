@@ -10,7 +10,7 @@ app.use(express.json());
 
 // connect to database
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = "mongodb+srv://user1:aGdheVxCvvWm8Q0i@cluster0.ungi5.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
@@ -26,6 +26,13 @@ async function run() {
           const cursor = inventoryCollection.find(query);
           const result = await cursor.toArray();
           res.send(result);
+      })
+      
+      app.get('/inventory/:id', async (req, res)=>{
+          const id = req.params.id;
+          const query = {_id : ObjectId(id)}
+          const inventory = await inventoryCollection.findOne(query);
+          res.send(inventory);
       })
     } finally {
     //   await client.close();
