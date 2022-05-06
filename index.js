@@ -20,7 +20,8 @@ async function run() {
     try {
       await client.connect();
       const inventoryCollection = client.db("autohunt").collection("inventories");
-
+    
+    //   sending all items
       app.get('/inventory', async (req, res)=>{
           const query = {};
           const cursor = inventoryCollection.find(query);
@@ -28,12 +29,30 @@ async function run() {
           res.send(result);
       })
       
+    //   sending one item
       app.get('/inventory/:id', async (req, res)=>{
           const id = req.params.id;
           const query = {_id : ObjectId(id)}
           const inventory = await inventoryCollection.findOne(query);
           res.send(inventory);
       })
+
+    //   getting my items
+      app.get('/myitems/:email', async(req, res)=>{
+          const email = req.params.email;
+          const query = {email: email}
+          const cursor = inventoryCollection.find(query);
+          const result =  await cursor.toArray();
+          res.send(result);
+      })
+    // deleting items
+    app.delete('/manageinventories/:id', async(req, res)=>{
+        const id = req.params.id;
+        const query = {_id : ObjectId(id)}
+        const result = await inventoryCollection.deleteOne(query);
+        res.send(result);
+          
+    })
     } finally {
     //   await client.close();
     }
