@@ -45,6 +45,7 @@ async function run() {
           const result =  await cursor.toArray();
           res.send(result);
       })
+
     // deleting items
     app.delete('/manageinventories/:id', async(req, res)=>{
         const id = req.params.id;
@@ -52,6 +53,13 @@ async function run() {
         const result = await inventoryCollection.deleteOne(query);
         res.send(result);
           
+    })
+
+    // adding new items
+    app.post('/additems', async (req, res)=>{
+        const inventory = req.body;
+        const result = await inventoryCollection.insertOne(inventory);
+        res.send(result);
     })
     } finally {
     //   await client.close();
