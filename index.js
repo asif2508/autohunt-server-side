@@ -78,7 +78,6 @@ async function run() {
     //   getting my items
     app.get('/myitems/:email', verifyToken, async (req, res) => {
       const reqEmail = req.decoded.email;
-      console.log(reqEmail);
       const email = req.params.email;
       if (reqEmail === email || reqEmail.email == "forJwtSocialLoginError") {
         const query = { email: email }
