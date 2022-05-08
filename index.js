@@ -79,7 +79,7 @@ async function run() {
     app.get('/myitems/:email', verifyToken, async (req, res) => {
       const reqEmail = req.decoded.email;
       const email = req.params.email;
-      if (reqEmail === email || reqEmail.email == "forJwtSocialLoginError") {
+      if (reqEmail === email) {
         const query = { email: email }
         const cursor = inventoryCollection.find(query);
         const result = await cursor.toArray();
